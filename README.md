@@ -2,9 +2,9 @@
 This repository contains my first Python assignment for the course.  
 The task was to create an ASCII art using only 'print()' statements in Python.
 
-I wanted to make it about something I like so i choose to recrate the sign of my favourite band: Thirty Seconds to Mars 🎸
+I wanted to make it about something I like so i choose to recrate the sign of my favourite band: Thirty Seconds to Mars. 🎸
 
-## What I Learned
+## What I Learned 💡
 
 - How to use the 'print()' function in Python.  
 - How to create simple ASCII art using code.  
