@@ -22,11 +22,10 @@ The task was to create a small interactive text game.
 I decided to make a quiz about something I really like once again, this time I decide to make it about another favorite Band of mine: **Linkin Park**. 🤘  
 The game asks the player five questions about the band, checks the answers, gives feedback, and shows the final score.
 
----
 
 ## What I Learned 💡
 
-- How to use `if`, `elif`, and `else` to check conditions in Python  
-- How to use `input()` to get answers from the user  
-- How to convert strings to numbers using `int()`  
-- How to use `time.sleep()` to add short pauses and improve the user experience.
+- How to use 'if', 'elif', and 'else' to check conditions in Python  
+- How to use 'input()' to get answers from the user  
+- How to convert strings to numbers using 'int()'  
+- How to use 'time.sleep()' to add short pauses and improve the user experience.
