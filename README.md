@@ -19,7 +19,7 @@ I wanted to make it about something I like so i choose to recrate the logo of my
 This repository contains my second Python assignments for the course.  
 The task was to create a small interactive text game.
 
-I decided to make a quiz about something I really like once again, this time I decide to make it about another favorite Band of mine: **Linkin Park**. 🤘  
+I decided to make a quiz about something I really like once again, but this time it's about: **Linkin Park**. 🤘  
 The game asks the player five questions about the band, checks the answers, gives feedback, and shows the final score.
 
 
