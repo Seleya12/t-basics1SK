@@ -76,6 +76,9 @@ else:
     print("That's from 'Given Up'. Screams included.")
 
 # Final Score
+
+print("\n🎤 Quiz complete,", name + "! You scored", score, "/4.")
+if score == 4:
     print("You're a Linkin Legend! ⭐⭐⭐⭐⭐")
 elif score >= 3:
     print("Solid! You know your LP. 🤘")
