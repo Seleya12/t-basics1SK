@@ -42,7 +42,7 @@ I chose this topic to stay on theme with the previous weeks, where I focused on 
 
 ## What I Learned 💡
 
-How to import and use the `random` module.  
-How to build something with nested `for` loops and string concatenation  
-How to use `if` statements to decide between symbols 
-How to repeat a pattern until a condition using a `while` loop  
+How to import and use the random module
+How to build something with nested for loops and string concatenation  
+How to use if statements to decide between symbols 
+How to repeat a pattern until a condition using a while loop  
