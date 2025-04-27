@@ -35,9 +35,9 @@ How to use 'time.sleep()' to add short pauses and improve the user experience.
 # Week 3 Assignment 🎶
 
 This repository contains my third Python assignment for the course.  
-The task was to build a **music-themed ASCII stage**
+The task was to build a a more complicated ASCII art design by integrating new concepts & tools.
 
-I chose this topic to stay on theme with the previous weeks, where I focused on music-related topics. Continuing the trend, this week, I decided to create a fun, interactive music stage , where the instrument name is featured front and center on the stage, with symbols and an audience enjoying the show.
+I tried to stay on theme with the previous weeks, where I focused on music-related projects, so I decided to create a fun, interactive music stage , where the instrument name is featured front and center on the stage, with symbols and an audience enjoying the show.
 
 
 ## What I Learned 💡
