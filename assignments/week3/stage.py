@@ -1,59 +1,59 @@
 import random
-import time
 
-# Step 1: User Inputs
+# 1. Take User Inputs
 width = int(input("Enter the stage width (20-60): "))
 height = int(input("Enter the stage height (5-20): "))
 instrument = input("Enter your favorite musical instrument: ")
 
-# Validation
-if width < 20 or width > 60 or height < 5 or height > 20:
-    print("Stage size out of bounds! Using default (40x10).")
+# 2. Validate Inputs (simple version)
+if width < 20 or width > 60:
+    print("Width out of range, setting to 40.")
     width = 40
+if height < 5 or height > 20:
+    print("Height out of range, setting to 10.")
     height = 10
 
-# Easy typing "music" symbols
-music_symbols = ['*', '-', '~', 'o', '.', "'", '|']
+# 3. Symbols to use
+symbols = ['*', '-', '~', 'o', '.']
 
-# Step 2: Create the top border
-print('+' + '-' * width + '+')
+# 4. Print top of stage
+print("+" + "-" * width + "+")
 
-# Random row where the instrument name will appear
+# 5. Pick a random row for the instrument banner
 banner_row = random.randint(1, height - 2)
 
+# 6. Build the stage
 for row in range(height):
-    line = '|'
+    line = "|"
     for col in range(width):
         if row == banner_row:
-            # Insert the instrument centered
-            start_pos = (width - len(instrument)) // 2
-            if start_pos <= col < start_pos + len(instrument):
-                line += instrument[col - start_pos]
+            # Center the instrument
+            start_col = (width - len(instrument)) // 2
+            if start_col <= col < start_col + len(instrument):
+                line += instrument[col - start_col]
             else:
-                line += ' '
+                line += " "
         else:
-            # Randomly place symbols or spaces
-            if random.random() < 0.15:
-                line += random.choice(music_symbols)
+            # Randomly pick symbol or space
+            if random.randint(1, 5) == 1:
+                line += random.choice(symbols)
             else:
-                line += ' '
-    line += '|'
+                line += " "
+    line += "|"
     print(line)
-    time.sleep(0.1)  # small delay for animation
 
-# Stage floor
-print('+' + '-' * width + '+')
+# 7. Print bottom of stage
+print("+" + "-" * width + "+")
 
-# Step 3: Create audience row
-audience = "(o_o)"
-audience_line = ''
+# 8. Print audience
+audience = "(o_o) "
+audience_line = ""
 while len(audience_line) < width:
-    audience_line += audience + ' '
-# Truncate audience line to match width
-audience_line = audience_line[:width]
+    audience_line += audience
 
-# Print audience under the stage
-print(' ' + audience_line)
-print(' ' + audience_line)
+# Only print the right width
+print(audience_line[:width])
+print(audience_line[:width])
 
-print("\n🎶 Thanks for performing on the stage! 🎶")
+# 9. End message
+print("🎶 Thanks for performing on the stage! 🎶")
