@@ -32,7 +32,7 @@ How to convert strings to numbers using 'int()'
 How to use 'time.sleep()' to add short pauses and improve the user experience. 
 
 
-## Week 3 Assignment 🎶
+# Week 3 Assignment 🎶
 
 This repository contains my third Python assignment for the course.  
 The task was to build a **music-themed ASCII stage**
