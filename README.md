@@ -30,3 +30,19 @@ How to use 'if', 'elif', and 'else' to check conditions in Python
 How to use 'input()' to get answers from the user  
 How to convert strings to numbers using 'int()'  
 How to use 'time.sleep()' to add short pauses and improve the user experience. 
+
+
+## Week 3 Assignment 🎶
+
+This repository contains my third Python assignment for the course.  
+The task was to build a **music-themed ASCII stage**
+
+I chose this topic to stay on theme with the previous weeks, where I focused on music-related topics. Continuing the trend, this week, I decided to create a fun, interactive music stage , where the instrument name is featured front and center on the stage, with symbols and an audience enjoying the show.
+
+
+## What I Learned 💡
+
+How to import and use the `random` module.  
+How to build something with nested `for` loops and string concatenation  
+How to use `if` statements to decide between symbols 
+How to repeat a pattern until a condition using a `while` loop  
