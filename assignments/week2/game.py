@@ -10,7 +10,6 @@ time.sleep(1)
 
 score = 0
 
-
 print("\n1. Which album features the song 'The emptiness Machine'?")
 print("A) Meteora")
 print("B) Minutes to Midnight")
@@ -21,7 +20,6 @@ if answer1 == 'c':
     score += 1
 else:
     print("Oops! That was from 'From Zero'.")
-
 
 print("\n2. Finish the lyric: 'I tried so hard...'")
 print("A) ...and got so far")
