@@ -10,7 +10,7 @@ time.sleep(1)
 
 score = 0
 
-# Question 1
+
 print("\n1. Which album features the song 'The emptiness Machine'?")
 print("A) Meteora")
 print("B) Minutes to Midnight")
@@ -22,7 +22,7 @@ if answer1 == 'c':
 else:
     print("Oops! That was from 'From Zero'.")
 
-# Question 2 (with nested if)
+
 print("\n2. Finish the lyric: 'I tried so hard...'")
 print("A) ...and got so far")
 print("B) ...to fall apart")
@@ -36,11 +36,11 @@ if answer2 == 'a':
 else:
     print("Nope, it's '...and got so far'!")
 
-# Question 3 (number input — only one check)
+
 print("\n3. What year was 'Meteora' released?")
 year = input("Enter a year between 2000 and 2010: ")
 
-# check if it's a number
+
 if year.isdigit():
     year = int(year)
     if year == 2003:
@@ -53,7 +53,6 @@ if year.isdigit():
 else:
     print("That wasn't a number.")
 
-# Question 4 (branching)
 print("\n4. Do you prefer Emily's screaming or Mike's rapping?")
 choice = input("Type 'screaming' or 'rapping': ").strip().lower()
 if choice == 'screaming':
@@ -63,7 +62,6 @@ elif choice == 'rapping':
 else:
     print("You're a peaceful soul, huh?")
 
-# Question 5
 print("\n5. Which song includes the lyrics : 'Put me out of my misery'?")
 print("A) One More Light")
 print("B) Given Up")
@@ -75,7 +73,6 @@ if answer5 == 'b':
 else:
     print("That's from 'Given Up'. Screams included.")
 
-# Final Score
 
 print("\n🎤 Quiz complete,", name + "! You scored", score, "/4.")
 if score == 4:
