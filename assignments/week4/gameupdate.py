@@ -75,7 +75,7 @@ def print_result(score, name):
         print("Solid! You know your LP. 🤘")
     else:
         print("Looks like it's time for a re-listen marathon 🎧")
-
+        
 def start_quiz():
     print("\n🎧 Welcome to the Linkin Park Song Quiz! 🎧")
     time.sleep(1)
