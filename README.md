@@ -45,4 +45,18 @@ I tried to stay on theme with the previous weeks, where I focused on music-relat
 - How to import and use the random module
 - How to build something with nested for loops and string concatenation
 - How to use if statements to decide between symbols
-- How to repeat a pattern until a condition using a while loop  
+- How to repeat a pattern until a condition using a while loop
+
+
+# Week 4 Assignment 🎧
+
+This repository contains my fourth Python assignment for the course.
+
+This week’s task was all about refactoring – cleaning up and restructuring code without changing what it does. To practice this, I went back to my Week 2 Linkin Park quiz game and gave it a little bit of a makeover.
+
+## What I Learned 💡
+
+- How to define and call my own functions
+- The difference between local and global variables
+- How to use arguments, return values, and avoid repetition
+- What recursion is and how it works
