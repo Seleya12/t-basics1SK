@@ -1,19 +1,23 @@
 import time
 import random
 
+#Game constants
 MAX_HP = 100
 ATTEMPTS = 5
-DEBUG = False
+DEBUG = False  
 
+#Predefined messages and options
 LOSING_MESSAGE = "You lost the game! Do you want to play again?"
 OPTIONS = ["Yes", "No"]
 DIRECTIONS = ["Left", "Right"]
 
+#Asks a multiple-choice question and checks if the answer is correct
 def ask_question(question, options, correct_answer):
     print(question)
     for i, option in enumerate(options, 1):
         print(f"{i}. {option}")
     answer = input("Your answer: ").strip().lower()
+    
     if answer == correct_answer:
         print("Correct!")
         return True
@@ -21,6 +25,7 @@ def ask_question(question, options, correct_answer):
         print("Incorrect!")
         return False
 
+#Checks if the user can guess the correct release year
 def check_year():
     year = input("Enter a year between 2000 and 2010: ")
     if year.isdigit():
@@ -35,6 +40,7 @@ def check_year():
         print("That wasn't a number.")
         return False
 
+#User can chooses between the two singers
 def check_choice():
     choice = input("Type 'screaming' or 'rapping': ").strip().lower()
     if choice == 'screaming':
@@ -47,9 +53,11 @@ def check_choice():
         print("You're a peaceful soul, huh?")
         return False
 
+#Main quiz function that tracks score
 def quiz():
     score = 0
     
+    #Each question adds to the score if answered correctly
     if ask_question("Which album features the song 'The Emptiness Machine'?", ["Meteora", "Minutes to Midnight", "From Zero"], 'c'):
         score += 1
 
@@ -67,6 +75,7 @@ def quiz():
 
     return score
 
+#Displays final result based on score
 def print_result(score, name):
     print("\n🎤 Quiz complete,", name + "! You scored", score, "/5.")
     if score == 5:
@@ -76,6 +85,7 @@ def print_result(score, name):
     else:
         print("Looks like it's time for a re-listen marathon 🎧")
         
+#Entry point for the quiz
 def start_quiz():
     print("\n🎧 Welcome to the Linkin Park Song Quiz! 🎧")
     time.sleep(1)
@@ -89,5 +99,6 @@ def start_quiz():
     print_result(score, name)
 
     print("\nThanks for playing! Keep the LP spirit alive. 💀🎸")
+
 
 start_quiz()
