@@ -52,7 +52,7 @@ I tried to stay on theme with the previous weeks, where I focused on music-relat
 
 This repository contains my fourth Python assignment for the course.
 
-This week’s task was all about refactoring – cleaning up and restructuring code without changing what it does. To practice this, I went back to my Week 2 Linkin Park quiz game and gave it a little bit of a makeover.
+This week’s task was all about refactoring, cleaning up and restructuring code without changing what it does. To practice this, I went back to my Week 2 Linkin Park quiz game and gave it a little bit of a makeover.
 
 ## What I Learned 💡
 
