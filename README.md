@@ -26,10 +26,10 @@ The game asks the player five questions about the band, checks the answers, give
 
 ## What I Learned 💡 
 
-How to use 'if', 'elif', and 'else' to check conditions in Python  
-How to use 'input()' to get answers from the user  
-How to convert strings to numbers using 'int()'  
-How to use 'time.sleep()' to add short pauses and improve the user experience. 
+- How to use 'if', 'elif', and 'else' to check conditions in Python
+- How to use 'input()' to get answers from the user
+- How to convert strings to numbers using 'int()'
+- How to use 'time.sleep()' to add short pauses and improve the user experience. 
 
 
 # Week 3 Assignment 🎶
@@ -42,7 +42,7 @@ I tried to stay on theme with the previous weeks, where I focused on music-relat
 
 ## What I Learned 💡
 
-How to import and use the random module
-How to build something with nested for loops and string concatenation  
-How to use if statements to decide between symbols 
-How to repeat a pattern until a condition using a while loop  
+- How to import and use the random module
+- How to build something with nested for loops and string concatenation
+- How to use if statements to decide between symbols
+- How to repeat a pattern until a condition using a while loop  
