@@ -5,11 +5,6 @@ MAX_HP = 100
 ATTEMPTS = 5
 DEBUG = False  
 
-# Predefined messages and options
-LOSING_MESSAGE = "You lost the game! Do you want to play again?"
-OPTIONS = ["Yes", "No"]
-DIRECTIONS = ["Left", "Right"]
-
 # Asks a multiple-choice question and checks if the answer is correct
 def ask_question(question, options, correct_letter):
     print(question)
@@ -95,6 +90,11 @@ def print_result(score, name):
     else:
         print("Looks like it's time for a re-listen marathon 🎧")
 
+# Ask if user wants to play again
+def play_again():
+    response = input("\nDo you want to play again? (yes/no): ").strip().lower()
+    return response == "yes"
+
 # Entry point for the quiz
 def start_quiz():
     print("\n🎧 Welcome to the Linkin Park Song Quiz! 🎧")
@@ -104,13 +104,12 @@ def start_quiz():
     print(f"Nice to meet you, {name}! Let's see if you're a true Linkin Park fan...")
     time.sleep(1)
 
-    score = quiz()
-    print_result(score, name)
+    while True:
+        score = quiz()
+        print_result(score, name)
 
-    print("\nThanks for playing! Keep the LP spirit alive. 💀🎸")
+        print("\nThanks for playing! Keep the LP spirit alive. 💀🎸")
 
-# Run the quiz
-start_quiz()
-
-
-start_quiz()
+        if not play_again():
+            print("Goodbye! 👋")
+            break
