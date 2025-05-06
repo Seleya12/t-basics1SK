@@ -69,8 +69,7 @@ def quiz():
     if check_year():
         score += 1
 
-    if check_choice():
-        score += 1
+    check_choice()  # <-- Kein Punkt mehr hier
 
     if ask_question(
         "Which song includes the lyrics: 'Put me out of my misery'?",
@@ -82,8 +81,8 @@ def quiz():
 
 # Displays final result based on score
 def print_result(score, name):
-    print(f"\n🎤 Quiz complete, {name}! You scored {score}/5.")
-    if score == 5:
+    print(f"\n🎤 Quiz complete, {name}! You scored {score}/4.")
+    if score == 4:
         print("You're a Linkin Legend! ⭐⭐⭐⭐⭐")
     elif score >= 3:
         print("Solid! You know your LP. 🤘")
@@ -113,3 +112,7 @@ def start_quiz():
         if not play_again():
             print("Goodbye! 👋")
             break
+            
+# Start quiz
+if __name__ == "__main__":
+    start_quiz()
