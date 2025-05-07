@@ -1,150 +1,183 @@
-MAX_INVENTORY_SIZE = 5
-inventory = []
-current_room = "lobby"
-game_won = False
+# Text-based survival adventure game: Escape from a Linkin Park-inspired post-apocalyptic world
+# Player must collect and use items to survive and find a way to freedom, themed around Linkin Park's music
 
+import sys
+
+# Inventory system
+inventory = []
+INVENTORY_LIMIT = 5
+
+# Room system: Areas inspired by Linkin Park themes (e.g., dystopian, emotional, industrial)
 rooms = {
-    "lobby": {
-        "description": "You are in the studio lobby. Posters of Linkin Park hang on the walls.",
+    "wasteland": {
         "items": [
-            {"name": "Access Card", "type": "tool", "description": "Grants access to restricted studio areas."}
+            {"name": "Energy Cell", "type": "tool", "uses": 3},
+            {"name": "Rations", "type": "food", "uses": 1}
         ],
-        "exits": ["recording_room"]
+        "description": "A barren wasteland under a crimson sky, like the world of 'Somewhere I Belong.' Scattered tech lies around."
     },
-    "recording_room": {
-        "description": "You enter the recording room. A faint echo of vocals lingers in the air.",
+    "ruins": {
         "items": [
-            {"name": "Guitar Pick", "type": "tool", "description": "Mike's favorite pick. Still warm."},
-            {"name": "Energy Drink", "type": "healing", "uses": 1, "description": "Restores your energy."}
+            {"name": "Wire Coil", "type": "tool", "uses": 2},
+            {"name": "Protein Bar", "type": "food", "uses": 1}
         ],
-        "exits": ["lobby", "archive"]
+        "description": "Crumbling ruins of a city, echoing 'In the End.' You need a Decoder to navigate the locked gates.",
+        "requires": "Decoder"
     },
-    "archive": {
-        "description": "You are surrounded by shelves of tapes and handwritten notes.",
+    "bunker": {
         "items": [
-            {"name": "Lyrics Sheet", "type": "clue", "description": "A lost verse from an unreleased track."}
+            {"name": "Decoder", "type": "tool", "uses": 5},
+            {"name": "Signal Flare", "type": "tool", "uses": 3}
         ],
-        "exits": ["recording_room", "control_room"]
-    },
-    "control_room": {
-        "description": "This is the heart of the studio. The soundboard awaits one final song.",
-        "items": [],
-        "exits": ["archive"]
+        "description": "A dark bunker, like the hideout in 'Crawling.' Something high-tech is stashed here."
     }
 }
+current_room = "wasteland"
 
-def show_inventory():
-    if not inventory:
-        print("Your inventory is empty.")
-    else:
-        print("Inventory:")
-        for item in inventory:
-            print(f"- {item['name']}")
+# Player status
+player_energy = 3  # Max 5, decreases over time, restored by food
+escaped = False
 
 def show_room_items():
+    """Display items in the current room."""
+    print(f"\n{rooms[current_room]['description']}")
     items = rooms[current_room]["items"]
-    if not items:
-        print("There are no items here.")
+    if items:
+        print("Items here:", ", ".join([item["name"] for item in items]))
     else:
-        print("Items in the room:")
-        for item in items:
-            print(f"- {item['name']}")
+        print("No items here.")
 
 def pick_up(item_name):
-    if len(inventory) >= MAX_INVENTORY_SIZE:
-        print("Your inventory is full.")
-        return
-    for item in rooms[current_room]["items"]:
+    """Pick up an item from the room if inventory isn't full."""
+    global inventory
+    items = rooms[current_room]["items"]
+    for item in items:
         if item["name"].lower() == item_name.lower():
-            inventory.append(item)
-            rooms[current_room]["items"].remove(item)
-            print(f"You picked up: {item['name']}")
-            return
-    print("That item is not here.")
+            if len(inventory) < INVENTORY_LIMIT:
+                inventory.append(item)
+                items.remove(item)
+                print(f"Picked up {item['name']}.")
+                return
+            else:
+                print("Inventory full! Drop something first, like letting go in 'Numb.'")
+                return
+    print(f"No {item_name} found in {current_room}.")
 
 def drop(item_name):
+    """Drop an item from inventory to the room."""
+    global inventory
     for item in inventory:
         if item["name"].lower() == item_name.lower():
             inventory.remove(item)
             rooms[current_room]["items"].append(item)
-            print(f"You dropped: {item['name']}")
+            print(f"Dropped {item['name']}.")
             return
-    print("You don't have that item.")
+    print(f"No {item_name} in inventory.")
 
 def use(item_name):
-    global game_won
+    """Use an item based on its type, with special events for certain items."""
+    global player_energy, escaped
     for item in inventory:
         if item["name"].lower() == item_name.lower():
-            if item["type"] in ["healing", "food"]:
-                print(f"You used the {item['name']} and feel refreshed.")
-                inventory.remove(item)
-                return
-            elif item["type"] == "clue" and item["name"].lower() == "lyrics page":
-                has_pick = any(i["name"].lower() == "guitar pick" for i in inventory)
-                if has_pick and current_room == "control_room":
-                    print("You place the Lyrics Sheet on the console and strum the Guitar Pick...")
-                    print("The hidden track comes alive. You've restored the lost Linkin Park demo.")
-                    game_won = True
-                    return
-                else:
-                    print("You need to be in the control room and have the Guitar Pick to use this.")
-                    return
+            if item["type"] == "food":
+                player_energy = min(player_energy + 1, 5)
+                print(f"Consumed {item['name']}. Energy restored to {player_energy}, pushing through like 'Breaking the Habit.'")
+                item["uses"] -= 1
+            elif item["name"] == "Signal Flare" and "Energy Cell" in [i["name"] for i in inventory]:
+                print("Used Signal Flare with Energy Cell to send a beacon! A rescue craft spots you, like the hope in 'The Catalyst!'")
+                escaped = True
             else:
-                print(f"You used the {item['name']}.")
-                return
-    print("You don't have that item.")
+                print(f"Used {item['name']}... but nothing happened.")
+                item["uses"] -= 1
+            if item["uses"] <= 0:
+                inventory.remove(item)
+                print(f"{item['name']} is depleted.")
+            return
+    print(f"No {item_name} in inventory.")
+
+def show_inventory():
+    """Display player's inventory and energy."""
+    print(f"\nEnergy: {player_energy}/5")
+    if inventory:
+        print("Inventory:", ", ".join([item["name"] for item in inventory]))
+    else:
+        print("Inventory is empty, like the void in 'Shadow of the Day.'")
 
 def examine(item_name):
-    all_items = inventory + rooms[current_room]["items"]
-    for item in all_items:
+    """Examine an item in inventory or room for details."""
+    for item in inventory + rooms[current_room]["items"]:
         if item["name"].lower() == item_name.lower():
-            print(f"{item['name']}: {item.get('description', 'No description.')}")
+            print(f"{item['name']}: Type: {item['type']}, Uses left: {item['uses']}")
             return
-    print("You see nothing like that here.")
+    print(f"No {item_name} found.")
 
-def show_help():
-    print("Commands: inventory, look, pickup [item], drop [item], use [item], examine [item], help, quit")
-
-def game_loop():
+def move_to_room(room_name):
+    """Attempt to move to a new room, checking requirements."""
     global current_room
-    print("Welcome to 'Escape the Studio – Linkin Park Lost Tracks'")
-    player_name = input("Enter your name: ").strip() or "Soldier"
-    print(f"Welcome, {player_name}! Type 'help' for a list of commands.")
+    if room_name not in rooms:
+        print("No such place!")
+        return
+    if room_name == current_room:
+        print("You're already here!")
+        return
+    if "requires" in rooms[room_name] and rooms[room_name]["requires"] not in [i["name"] for i in inventory]:
+        print(f"You need a {rooms[room_name]['requires']} to enter the {room_name}.")
+        return
+    current_room = room_name
+    print(f"Moved to {room_name}.")
+    show_room_items()
 
-    while not game_won:
-        print(f"\n{rooms[current_room]['description']}")
-        command = input("> ").strip().lower()
+def help_menu():
+    """Display available commands."""
+    print("\nCommands:")
+    print("  inventory - Show your inventory and energy")
+    print("  pickup <item> - Pick up an item")
+    print("  drop <item> - Drop an item")
+    print("  use <item> - Use an item")
+    print("  examine <item> - Examine an item")
+    print("  move <room> - Move to another area (wasteland, ruins, bunker)")
+    print("  help - Show this menu")
+    print("  quit - Exit game")
 
-        if command == "":
-            continue
-        elif command == "help":
-            show_help()
-        elif command == "inventory":
-            show_inventory()
-        elif command == "look":
-            show_room_items()
-        elif command.startswith("pickup "):
-            pick_up(command[7:])
-        elif command.startswith("drop "):
-            drop(command[5:])
-        elif command.startswith("use "):
-            use(command[4:])
-        elif command.startswith("examine "):
-            examine(command[8:])
-        elif command.startswith("go "):
-            destination = command[3:]
-            if destination in rooms[current_room]["exits"]:
-                current_room = destination
-            else:
-                print("You can't go there from here.")
-        elif command == "quit":
-            print(f"Goodbye, {player_name}.")
+def main():
+    """Main game loop."""
+    global player_energy
+    print("Welcome to Escape the Broken World!")
+    print("In a dystopian land inspired by Linkin Park, you must survive and signal for rescue.")
+    print("Type 'help' for commands.")
+    show_room_items()
+
+    while not escaped and player_energy > 0:
+        # Energy decreases gradually (simulating harsh environment)
+        player_energy = max(player_energy - 0.1, 1)
+        if player_energy <= 1:
+            print("You're too drained to continue... Game Over, fading like 'Leave Out All the Rest.'")
             break
-        else:
-            print("Unknown command. Type 'help' to see available commands.")
 
-    if game_won:
-        print("You won the game. Congratulations!")
+        try:
+            command = input("\n> ").strip().lower()
+            if command == "quit":
+                print("Thanks for playing!")
+                break
+            elif command == "help":
+                help_menu()
+            elif command == "inventory":
+                show_inventory()
+            elif command.startswith("pickup "):
+                pick_up(command[7:])
+            elif command.startswith("drop "):
+                drop(command[5:])
+            elif command.startswith("use "):
+                use(command[4:])
+            elif command.startswith("examine "):
+                examine(command[8:])
+            elif command.startswith("move "):
+                move_to_room(command[5:])
+            else:
+                print("Unknown command. Type 'help' for commands.")
+        except KeyboardInterrupt:
+            print("\nThanks for playing!")
+            break
 
 if __name__ == "__main__":
-    game_loop()
+    main()
