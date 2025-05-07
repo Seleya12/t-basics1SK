@@ -1,15 +1,37 @@
-inventory = []
-items_in_room = [
-    {"name": "Guitar", "type": "instrument", "description": "A classic electric guitar used in 'Numb'."},
-    {"name": "Microphone", "type": "tool", "description": "Capture your vocals like Chester."},
-    {"name": "Energy Drink", "type": "food", "description": "Restores your focus."},
-    {"name": "Lyrics Sheet", "type": "tool", "description": "Lyrics to an unreleased song."},
-    {"name": "Hybrid Key", "type": "key", "description": "Unlocks the studio exit."},
-    {"name": "Drumsticks", "type": "instrument", "description": "Used by Rob during live sessions."},
-    {"name": "Pizza Slice", "type": "food", "description": "Because even legends need a break."}
-]
 MAX_INVENTORY_SIZE = 5
+inventory = []
+current_room = "lobby"
 game_won = False
+
+rooms = {
+    "lobby": {
+        "description": "You are in the studio lobby. Posters of Linkin Park hang on the walls.",
+        "items": [
+            {"name": "Access Card", "type": "tool", "description": "Grants access to restricted studio areas."}
+        ],
+        "exits": ["recording_room"]
+    },
+    "recording_room": {
+        "description": "You enter the recording room. A faint echo of vocals lingers in the air.",
+        "items": [
+            {"name": "Guitar Pick", "type": "tool", "description": "Mike's favorite pick. Still warm."},
+            {"name": "Energy Drink", "type": "healing", "uses": 1, "description": "Restores your energy."}
+        ],
+        "exits": ["lobby", "archive"]
+    },
+    "archive": {
+        "description": "You are surrounded by shelves of tapes and handwritten notes.",
+        "items": [
+            {"name": "Lyrics Sheet", "type": "clue", "description": "A lost verse from an unreleased track."}
+        ],
+        "exits": ["recording_room", "control_room"]
+    },
+    "control_room": {
+        "description": "This is the heart of the studio. The soundboard awaits one final song.",
+        "items": [],
+        "exits": ["archive"]
+    }
+}
 
 def show_inventory():
     if not inventory:
@@ -20,30 +42,31 @@ def show_inventory():
             print(f"- {item['name']}")
 
 def show_room_items():
-    if not items_in_room:
-        print("There are no items in this room.")
+    items = rooms[current_room]["items"]
+    if not items:
+        print("There are no items here.")
     else:
         print("Items in the room:")
-        for item in items_in_room:
+        for item in items:
             print(f"- {item['name']}")
 
 def pick_up(item_name):
     if len(inventory) >= MAX_INVENTORY_SIZE:
-        print("Inventory full. Drop something first.")
+        print("Your inventory is full.")
         return
-    for item in items_in_room:
+    for item in rooms[current_room]["items"]:
         if item["name"].lower() == item_name.lower():
             inventory.append(item)
-            items_in_room.remove(item)
+            rooms[current_room]["items"].remove(item)
             print(f"You picked up: {item['name']}")
             return
-    print("That item is not in the room.")
+    print("That item is not here.")
 
 def drop(item_name):
     for item in inventory:
         if item["name"].lower() == item_name.lower():
             inventory.remove(item)
-            items_in_room.append(item)
+            rooms[current_room]["items"].append(item)
             print(f"You dropped: {item['name']}")
             return
     print("You don't have that item.")
@@ -52,69 +75,76 @@ def use(item_name):
     global game_won
     for item in inventory:
         if item["name"].lower() == item_name.lower():
-            if item["type"] in ["food", "healing"]:
-                print(f"You used the {item['name']}. You feel refreshed.")
+            if item["type"] in ["healing", "food"]:
+                print(f"You used the {item['name']} and feel refreshed.")
                 inventory.remove(item)
-            elif item["type"] == "tool":
-                print(f"You used the {item['name']}.")
-            elif item["type"] == "clue":
+                return
+            elif item["type"] == "clue" and item["name"].lower() == "lyrics page":
                 has_pick = any(i["name"].lower() == "guitar pick" for i in inventory)
-                if item["name"].lower() == "lyrics page" and has_pick:
-                    print("You use the Lyrics Page along with the Guitar Pick...")
-                    print("The final track is complete! You've saved the lost Linkin Park recording!")
+                if has_pick and current_room == "control_room":
+                    print("You place the Lyrics Sheet on the console and strum the Guitar Pick...")
+                    print("The hidden track comes alive. You've restored the lost Linkin Park demo.")
                     game_won = True
+                    return
                 else:
-                    print(f"You study the {item['name']}.")
+                    print("You need to be in the control room and have the Guitar Pick to use this.")
+                    return
             else:
-                print("You can't use that item now.")
-            return
+                print(f"You used the {item['name']}.")
+                return
     print("You don't have that item.")
 
 def examine(item_name):
-    all_items = inventory + items_in_room
+    all_items = inventory + rooms[current_room]["items"]
     for item in all_items:
         if item["name"].lower() == item_name.lower():
-            print(f"{item['name']}: {item.get('description', 'No description available.')}")
+            print(f"{item['name']}: {item.get('description', 'No description.')}")
             return
-    print("You can't find that item here.")
+    print("You see nothing like that here.")
+
+def show_help():
+    print("Commands: inventory, look, pickup [item], drop [item], use [item], examine [item], help, quit")
 
 def game_loop():
-    global game_won
-    print("Welcome to 'Escape the Studio – Linkin Park Lost Tracks'!")
-    player_name = input("Enter your name: ").strip()
-    if not player_name:
-        player_name = "Unknown Rockstar"
+    global current_room
+    print("Welcome to 'Escape the Studio – Linkin Park Lost Tracks'")
+    player_name = input("Enter your name: ").strip() or "Soldier"
     print(f"Welcome, {player_name}! Type 'help' for a list of commands.")
 
     while not game_won:
+        print(f"\n{rooms[current_room]['description']}")
         command = input("> ").strip().lower()
+
         if command == "":
             continue
         elif command == "help":
-            print("Commands: inventory, look, pickup [item], drop [item], use [item], examine [item], quit")
+            show_help()
         elif command == "inventory":
             show_inventory()
         elif command == "look":
             show_room_items()
         elif command.startswith("pickup "):
-            item_name = command[7:]
-            pick_up(item_name)
+            pick_up(command[7:])
         elif command.startswith("drop "):
-            item_name = command[5:]
-            drop(item_name)
+            drop(command[5:])
         elif command.startswith("use "):
-            item_name = command[4:]
-            use(item_name)
+            use(command[4:])
         elif command.startswith("examine "):
-            item_name = command[8:]
-            examine(item_name)
+            examine(command[8:])
+        elif command.startswith("go "):
+            destination = command[3:]
+            if destination in rooms[current_room]["exits"]:
+                current_room = destination
+            else:
+                print("You can't go there from here.")
         elif command == "quit":
-            print(f"Thanks for playing, {player_name}!")
-            return
+            print(f"Goodbye, {player_name}.")
+            break
         else:
             print("Unknown command. Type 'help' to see available commands.")
 
-    print("You won the game!")
+    if game_won:
+        print("You won the game. Congratulations!")
 
 if __name__ == "__main__":
     game_loop()
