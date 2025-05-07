@@ -9,7 +9,7 @@ items_in_room = [
     {"name": "Pizza Slice", "type": "food", "description": "Because even legends need a break."}
 ]
 MAX_INVENTORY_SIZE = 5
-
+game_won = False
 
 def show_inventory():
     if not inventory:
@@ -29,7 +29,7 @@ def show_room_items():
 
 def pick_up(item_name):
     if len(inventory) >= MAX_INVENTORY_SIZE:
-        print("Inventory full. Drop something before picking up new items.")
+        print("Inventory full. Drop something first.")
         return
     for item in items_in_room:
         if item["name"].lower() == item_name.lower():
@@ -46,20 +46,27 @@ def drop(item_name):
             items_in_room.append(item)
             print(f"You dropped: {item['name']}")
             return
-    print("You don't have that item in your inventory.")
+    print("You don't have that item.")
 
 def use(item_name):
+    global game_won
     for item in inventory:
         if item["name"].lower() == item_name.lower():
-            if item["type"] == "food" or item["type"] == "healing":
-                print(f"You used the {item['name']}. You feel refreshed!")
+            if item["type"] in ["food", "healing"]:
+                print(f"You used the {item['name']}. You feel refreshed.")
                 inventory.remove(item)
             elif item["type"] == "tool":
-                print(f"You used the {item['name']} – maybe it did something.")
+                print(f"You used the {item['name']}.")
             elif item["type"] == "clue":
-                print(f"You study the {item['name']} – it might be part of a lost track.")
+                has_pick = any(i["name"].lower() == "guitar pick" for i in inventory)
+                if item["name"].lower() == "lyrics page" and has_pick:
+                    print("You use the Lyrics Page along with the Guitar Pick...")
+                    print("The final track is complete! You've saved the lost Linkin Park recording!")
+                    game_won = True
+                else:
+                    print(f"You study the {item['name']}.")
             else:
-                print("You can't use that item right now.")
+                print("You can't use that item now.")
             return
     print("You don't have that item.")
 
@@ -69,17 +76,21 @@ def examine(item_name):
         if item["name"].lower() == item_name.lower():
             print(f"{item['name']}: {item.get('description', 'No description available.')}")
             return
-    print("You can't see that item here or in your inventory.")
-
+    print("You can't find that item here.")
 
 def game_loop():
-    print("🎧 Welcome to 'Escape the Studio – Linkin Park Lost Tracks'!")
-    print("Find the lost lyrics and escape before security shows up.")
-    print("Type 'help' for a list of commands.")
+    global game_won
+    print("Welcome to 'Escape the Studio – Linkin Park Lost Tracks'!")
+    player_name = input("Enter your name: ").strip()
+    if not player_name:
+        player_name = "Unknown Rockstar"
+    print(f"Welcome, {player_name}! Type 'help' for a list of commands.")
 
-    while True:
-        command = input("\n> ").strip().lower()
-        if command == "help":
+    while not game_won:
+        command = input("> ").strip().lower()
+        if command == "":
+            continue
+        elif command == "help":
             print("Commands: inventory, look, pickup [item], drop [item], use [item], examine [item], quit")
         elif command == "inventory":
             show_inventory()
@@ -98,10 +109,12 @@ def game_loop():
             item_name = command[8:]
             examine(item_name)
         elif command == "quit":
-            print("Thanks for playing! Don't let the studio eat you alive 🎤")
-            break
+            print(f"Thanks for playing, {player_name}!")
+            return
         else:
             print("Unknown command. Type 'help' to see available commands.")
+
+    print("You won the game!")
 
 if __name__ == "__main__":
     game_loop()
