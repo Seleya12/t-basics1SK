@@ -7,7 +7,6 @@ import sys
 inventory = []
 INVENTORY_LIMIT = 5
 
-# Room system: Areas inspired by Linkin Park themes (e.g., dystopian, emotional, industrial)
 rooms = {
     "wasteland": {
         "items": [
@@ -34,18 +33,30 @@ rooms = {
 }
 current_room = "wasteland"
 
-# Player status
 player_energy = 3  # Max 5, decreases over time, restored by food
 escaped = False
 
 def show_room_items():
-    """Display items in the current room."""
+    """Display items in the current room with clear interaction instructions."""
     print(f"\n{rooms[current_room]['description']}")
     items = rooms[current_room]["items"]
     if items:
-        print("Items here:", ", ".join([item["name"] for item in items]))
+        print("Items you can pick up:", ", ".join([item["name"] for item in items]))
+        print("Use 'pickup <item>' to grab one, or 'examine <item>' to inspect it.")
     else:
-        print("No items here.")
+        print("No items here to pick up.")
+
+def show_rooms():
+    """Display all rooms, indicating which are accessible or locked."""
+    print("\nPlaces you can move to:")
+    for room_name, room_data in rooms.items():
+        if room_name == current_room:
+            print(f"- {room_name} (you are here)")
+        elif "requires" in room_data and room_data["requires"] not in [i["name"] for i in inventory]:
+            print(f"- {room_name} (locked, needs {room_data['requires']})")
+        else:
+            print(f"- {room_name} (accessible)")
+    print("Use 'move <room>' to travel.")
 
 def pick_up(item_name):
     """Pick up an item from the room if inventory isn't full."""
@@ -100,6 +111,7 @@ def show_inventory():
     print(f"\nEnergy: {player_energy}/5")
     if inventory:
         print("Inventory:", ", ".join([item["name"] for item in inventory]))
+        print("Use 'use <item>' to consume or activate, 'drop <item>' to discard, or 'examine <item>' to inspect.")
     else:
         print("Inventory is empty, like the void in 'Shadow of the Day.'")
 
@@ -131,6 +143,7 @@ def help_menu():
     """Display available commands."""
     print("\nCommands:")
     print("  inventory - Show your inventory and energy")
+    print("  rooms - List all places you can move to")
     print("  pickup <item> - Pick up an item")
     print("  drop <item> - Drop an item")
     print("  use <item> - Use an item")
@@ -163,6 +176,8 @@ def main():
                 help_menu()
             elif command == "inventory":
                 show_inventory()
+            elif command == "rooms":
+                show_rooms()
             elif command.startswith("pickup "):
                 pick_up(command[7:])
             elif command.startswith("drop "):
