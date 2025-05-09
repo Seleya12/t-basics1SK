@@ -1,3 +1,5 @@
+import sys
+
 inventory = []
 INVENTORY_LIMIT = 5
 
@@ -27,10 +29,10 @@ rooms = {
     }
 }
 current_room = "lobby"
-
 player_energy = 3
 escaped = False
 
+# --- Game Functions ---
 def show_room_items():
     print(f"\n{rooms[current_room]['description']}")
     items = rooms[current_room]["items"]
@@ -136,9 +138,17 @@ def help_menu():
     print("  quit - Exit game")
     print("\nGoal: Collect the Guitar and Mixer Console and use them to create a tribute track and escape the studio!")
 
+# --- Main Loop ---
 def main():
     global player_energy
     print("Welcome to 'Escape the Studio: Linkin Park Edition'!")
+    name = input("What's your name, soldier?\n> ").strip().title()
+    if name:
+        print(f"Good to have you with us, {name}. Let’s finish what we started.")
+    else:
+        name = "Soldier"
+        print(f"Alright then, {name}.")
+
     print("Survive the creative chaos, gather musical relics, and remix the final tribute.")
     print("Type 'help' for a list of commands.")
     show_room_items()
