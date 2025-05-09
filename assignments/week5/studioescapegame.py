@@ -1,43 +1,40 @@
-# Text-based survival adventure game: Escape from a Linkin Park-inspired post-apocalyptic world
-# Player must collect and use items to survive and find a way to freedom, themed around Linkin Park's music
+# Escape the Studio: A Linkin Park Music Adventure
+# Player navigates a music studio complex, collects items, and escapes by triggering a final event
 
-import sys
-
-# Inventory system
 inventory = []
 INVENTORY_LIMIT = 5
 
 rooms = {
-    "wasteland": {
+    "lobby": {
         "items": [
-            {"name": "Energy Cell", "type": "tool", "uses": 3},
-            {"name": "Rations", "type": "food", "uses": 1}
+            {"name": "Access Card", "type": "tool", "uses": 1},
+            {"name": "Energy Drink", "type": "food", "uses": 1}
         ],
-        "description": "A barren wasteland under a crimson sky, like the world of 'Somewhere I Belong.' Scattered tech lies around."
+        "description": "You are in the studio lobby. Posters of Linkin Park hang on the walls."
     },
-    "ruins": {
+    "recording_room": {
         "items": [
-            {"name": "Wire Coil", "type": "tool", "uses": 2},
+            {"name": "Lyrics Sheet", "type": "tool", "uses": 2},
+            {"name": "Guitar", "type": "tool", "uses": 2}
+        ],
+        "description": "This is the main recording room where echoes of 'Numb' still linger.",
+        "requires": "Access Card"
+    },
+    "sound_lab": {
+        "items": [
+            {"name": "Mixer Console", "type": "tool", "uses": 1},
             {"name": "Protein Bar", "type": "food", "uses": 1}
         ],
-        "description": "Crumbling ruins of a city, echoing 'In the End.' You need a Decoder to navigate the locked gates.",
-        "requires": "Decoder"
-    },
-    "bunker": {
-        "items": [
-            {"name": "Decoder", "type": "tool", "uses": 5},
-            {"name": "Signal Flare", "type": "tool", "uses": 3}
-        ],
-        "description": "A dark bunker, like the hideout in 'Crawling.' Something high-tech is stashed here."
+        "description": "The studio's sound lab is filled with blinking lights and old tracks on tape.",
+        "requires": "Lyrics Sheet"
     }
 }
-current_room = "wasteland"
+current_room = "lobby"
 
-player_energy = 3  # Max 5, decreases over time, restored by food
+player_energy = 3
 escaped = False
 
 def show_room_items():
-    """Display items in the current room with clear interaction instructions."""
     print(f"\n{rooms[current_room]['description']}")
     items = rooms[current_room]["items"]
     if items:
@@ -47,7 +44,6 @@ def show_room_items():
         print("No items here to pick up.")
 
 def show_rooms():
-    """Display all rooms, indicating which are accessible or locked."""
     print("\nPlaces you can move to:")
     for room_name, room_data in rooms.items():
         if room_name == current_room:
@@ -59,8 +55,6 @@ def show_rooms():
     print("Use 'move <room>' to travel.")
 
 def pick_up(item_name):
-    """Pick up an item from the room if inventory isn't full."""
-    global inventory
     items = rooms[current_room]["items"]
     for item in items:
         if item["name"].lower() == item_name.lower():
@@ -70,13 +64,11 @@ def pick_up(item_name):
                 print(f"Picked up {item['name']}.")
                 return
             else:
-                print("Inventory full! Drop something first, like letting go in 'Numb.'")
+                print("Inventory full! Drop something first.")
                 return
     print(f"No {item_name} found in {current_room}.")
 
 def drop(item_name):
-    """Drop an item from inventory to the room."""
-    global inventory
     for item in inventory:
         if item["name"].lower() == item_name.lower():
             inventory.remove(item)
@@ -86,19 +78,18 @@ def drop(item_name):
     print(f"No {item_name} in inventory.")
 
 def use(item_name):
-    """Use an item based on its type, with special events for certain items."""
     global player_energy, escaped
     for item in inventory:
         if item["name"].lower() == item_name.lower():
             if item["type"] == "food":
                 player_energy = min(player_energy + 1, 5)
-                print(f"Consumed {item['name']}. Energy restored to {player_energy}, pushing through like 'Breaking the Habit.'")
+                print(f"Used {item['name']}. Energy is now {player_energy}.")
                 item["uses"] -= 1
-            elif item["name"] == "Signal Flare" and "Energy Cell" in [i["name"] for i in inventory]:
-                print("Used Signal Flare with Energy Cell to send a beacon! A rescue craft spots you, like the hope in 'The Catalyst!'")
+            elif item["name"] == "Mixer Console" and "Guitar" in [i["name"] for i in inventory]:
+                print("You remixed the final track! You've created a tribute masterpiece and escaped the studio legend!")
                 escaped = True
             else:
-                print(f"Used {item['name']}... but nothing happened.")
+                print(f"Used {item['name']}, but nothing major happened.")
                 item["uses"] -= 1
             if item["uses"] <= 0:
                 inventory.remove(item)
@@ -107,16 +98,13 @@ def use(item_name):
     print(f"No {item_name} in inventory.")
 
 def show_inventory():
-    """Display player's inventory and energy."""
     print(f"\nEnergy: {player_energy}/5")
     if inventory:
         print("Inventory:", ", ".join([item["name"] for item in inventory]))
-        print("Use 'use <item>' to consume or activate, 'drop <item>' to discard, or 'examine <item>' to inspect.")
     else:
-        print("Inventory is empty, like the void in 'Shadow of the Day.'")
+        print("Your inventory is empty.")
 
 def examine(item_name):
-    """Examine an item in inventory or room for details."""
     for item in inventory + rooms[current_room]["items"]:
         if item["name"].lower() == item_name.lower():
             print(f"{item['name']}: Type: {item['type']}, Uses left: {item['uses']}")
@@ -124,49 +112,41 @@ def examine(item_name):
     print(f"No {item_name} found.")
 
 def move_to_room(room_name):
-    """Attempt to move to a new room, checking requirements."""
     global current_room
     if room_name not in rooms:
-        print("No such place!")
+        print("No such room.")
         return
     if room_name == current_room:
-        print("You're already here!")
+        print("You're already here.")
         return
     if "requires" in rooms[room_name] and rooms[room_name]["requires"] not in [i["name"] for i in inventory]:
-        print(f"You need a {rooms[room_name]['requires']} to enter the {room_name}.")
+        print(f"You need a {rooms[room_name]['requires']} to enter {room_name}.")
         return
     current_room = room_name
     print(f"Moved to {room_name}.")
     show_room_items()
 
 def help_menu():
-    """Display available commands."""
     print("\nCommands:")
     print("  inventory - Show your inventory and energy")
-    print("  rooms - List all places you can move to")
+    print("  rooms - List all rooms and access")
     print("  pickup <item> - Pick up an item")
     print("  drop <item> - Drop an item")
-    print("  use <item> - Use an item")
-    print("  examine <item> - Examine an item")
-    print("  move <room> - Move to another area (wasteland, ruins, bunker)")
+    print("  use <item> - Use or consume an item")
+    print("  examine <item> - View item details")
+    print("  move <room> - Change rooms")
     print("  help - Show this menu")
     print("  quit - Exit game")
+    print("\nGoal: Collect the Guitar and Mixer Console and use them to create a tribute track and escape the studio!")
 
 def main():
-    """Main game loop."""
     global player_energy
-    print("Welcome to Escape the Broken World!")
-    print("In a dystopian land inspired by Linkin Park, you must survive and signal for rescue.")
-    print("Type 'help' for commands.")
+    print("Welcome to 'Escape the Studio: Linkin Park Edition'!")
+    print("Survive the creative chaos, gather musical relics, and remix the final tribute.")
+    print("Type 'help' for a list of commands.")
     show_room_items()
 
     while not escaped and player_energy > 0:
-        # Energy decreases gradually (simulating harsh environment)
-        player_energy = max(player_energy - 0.1, 1)
-        if player_energy <= 1:
-            print("You're too drained to continue... Game Over, fading like 'Leave Out All the Rest.'")
-            break
-
         try:
             command = input("\n> ").strip().lower()
             if command == "quit":
