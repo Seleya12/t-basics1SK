@@ -1,6 +1,3 @@
-# Escape the Studio: A Linkin Park Music Adventure
-# Player navigates a music studio complex, collects items, and escapes by triggering a final event
-
 inventory = []
 INVENTORY_LIMIT = 5
 
