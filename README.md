@@ -60,3 +60,19 @@ This week’s task was all about refactoring, cleaning up and restructuring code
 - The difference between local and global variables
 - How to use arguments, return values, and avoid repetition
 - What recursion is and how it works
+- 
+
+# Week 5 Assignment 📻
+
+This repository contains my fifth Python assignment for the course.
+
+The main focus this week was on understanding Python’s data structures, especially the ones that deal with collections and how they behave when it comes to mutability and references.
+
+To practice this, I wrote a text based studio escape game. 
+
+## What I Learned 💡
+
+- The difference between mutable and immutable data types in Python
+- How references work and how changing one variable can affect another if they point to the same object
+- How to use dictionaries for storing and retrieving key-value pairs efficiently
+- The key traits of sets and tuples, and when to use them
