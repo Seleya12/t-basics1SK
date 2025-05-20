@@ -140,7 +140,7 @@ def help_menu():
 
 
 def main():
-    global player_energy
+    global player_energy, escaped
     print("Welcome to 'Escape the Studio: Linkin Park Edition'!")
     name = input("What's your name, soldier?\n> ").strip().title()
     if name:
@@ -167,19 +167,37 @@ def main():
                 show_rooms()
             elif command.startswith("pickup "):
                 pick_up(command[7:])
+                player_energy -= 1
             elif command.startswith("drop "):
                 drop(command[5:])
+                player_energy -= 1
             elif command.startswith("use "):
                 use(command[4:])
+                player_energy -= 1
             elif command.startswith("examine "):
                 examine(command[8:])
+                player_energy -= 1
             elif command.startswith("move "):
                 move_to_room(command[5:])
+                player_energy -= 1
             else:
                 print("Unknown command. Type 'help' for commands.")
+            
+            # Zeige Energie nach jeder Aktion
+            if command not in ["help", "inventory", "rooms"]:
+                print(f"Energy: {player_energy}/5")
+
+            # Spiel beenden wenn gewonnen
+            if escaped:
+                print("\n🎉 Congratulations! You remixed the tribute track and escaped the studio legend! 🎉")
+                break
+
         except KeyboardInterrupt:
             print("\nThanks for playing!")
             break
 
+    if player_energy <= 0 and not escaped:
+        print("\n💀 You're out of energy... The studio consumes another soul.")
+        
 if __name__ == "__main__":
     main()
