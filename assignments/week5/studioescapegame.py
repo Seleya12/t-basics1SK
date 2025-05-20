@@ -32,7 +32,7 @@ current_room = "lobby"
 player_energy = 3
 escaped = False
 
-# --- Game Functions ---
+
 def show_room_items():
     print(f"\n{rooms[current_room]['description']}")
     items = rooms[current_room]["items"]
@@ -138,7 +138,7 @@ def help_menu():
     print("  quit - Exit game")
     print("\nGoal: Collect the Guitar and Mixer Console and use them to create a tribute track and escape the studio!")
 
-# --- Main Loop ---
+
 def main():
     global player_energy
     print("Welcome to 'Escape the Studio: Linkin Park Edition'!")
