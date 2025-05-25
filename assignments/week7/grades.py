@@ -91,3 +91,5 @@ if __name__ == "__main__":
 
     print_analysis()
 
+    print_analysis()
+
