@@ -75,7 +75,7 @@ def print_analysis():
             print(f"{week} average:", round(sum(week_scores) / len(week_scores), 2))
 
 if __name__ == "__main__":
-    script, filename = argv
+    filename = "Technical Basics I_2025 - Sheet1.csv"
 
     print("Open file:", filename)
 
@@ -88,6 +88,8 @@ if __name__ == "__main__":
 
     write_csv(newname)
     print("New file written:", newname)
+
+    print_analysis()
 
     print_analysis()
 
