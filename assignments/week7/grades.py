@@ -4,7 +4,7 @@ import random
 
 students = []
 
-# Step 1
+
 def read_csv(filename):
     global students
     try:
@@ -16,7 +16,7 @@ def read_csv(filename):
         print("File not found.")
         exit()
 
-# Step 2
+
 def populate_scores():
     weeks = [f"week{i}" for i in range(1, 14) if i != 6]
     for student in students:
@@ -24,7 +24,7 @@ def populate_scores():
             if week not in student or student[week].strip() in ["", "-"]:
                 student[week] = str(random.randint(0, 3))
 
-# Step 3
+
 def calculate_all():
     for student in students:
         scores = [int(student[week]) for week in student if week.startswith("week") and student[week].strip().isdigit()]
@@ -50,7 +50,7 @@ def write_csv(filename):
         writer.writeheader()
         writer.writerows(students)
 
-# Bonus
+
 def print_analysis():
     stream_a = []
     stream_b = []
@@ -90,6 +90,3 @@ if __name__ == "__main__":
     print("New file written:", newname)
 
     print_analysis()
-
-    print_analysis()
-
