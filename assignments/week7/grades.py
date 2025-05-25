@@ -83,7 +83,7 @@ if __name__ == "__main__":
     populate_scores()
     calculate_all()
 
-    user_name = "[your_name]"
+    user_name = "[Seleya]"
     newname = filename.split(".")[0] + "_calculated_by_" + user_name + ".csv"
 
     write_csv(newname)
